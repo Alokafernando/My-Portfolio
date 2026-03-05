@@ -58,13 +58,115 @@
         <a href="#contact" class="mobile-link">Contact</a>
     </div>
 
+    <!-- ══════════ HERO ══════════ -->
+    <section id="home">
+        <canvas id="particle-canvas"></canvas>
+
+        <!-- Portrait -->
+        <div class="hero-bg" data-aos="fade-down" data-aos-duration="1200">
+            <img src="assets/hero-section.png" alt="Buddhika Fernando" />
+            <div class="hero-bg-fade"></div>
+        </div>
+
+        <!-- Floating tech badges -->
+        <div class="float-badge hidden lg:block" style="top:22%;right:12%;"><span>⚡</span> Spring Boot</div>
+        <div class="float-badge float-badge-2 hidden lg:block" style="top:38%;right:8%;"><span>⚛</span> React</div>
+        <div class="float-badge float-badge-3 hidden lg:block" style="top:55%;right:14%;"><span>☕</span> Java</div>
+
+        <!-- Desktop social sidebar -->
+        <div class="social-sidebar">
+            <div class="s-line s-line-top"></div>
+            <a href="https://github.com/Alokafernando" aria-label="GitHub"><svg width="20" height="20"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path
+                        d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+                </svg></a>
+            <a href="https://www.linkedin.com/in/buddhika-fernando-73606131a/" aria-label="LinkedIn"><svg width="20"
+                    height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                    <rect x="2" y="9" width="4" height="12" />
+                    <circle cx="4" cy="4" r="2" />
+                </svg></a>
+            <a href="#" aria-label="Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                </svg></a>
+            <a href="/cdn-cgi/l/email-protection#62001706060a0b09030407100c030c060d535b22050f030b0e4c010d0f"
+                aria-label="Email"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="5" width="18" height="14" rx="2" />
+                    <polyline points="3 7 12 13 21 7" />
+                </svg></a>
+            <a href="https://t.me/Alokafernando" target="_blank" aria-label="Telegram"><svg width="20" height="20"
+                    viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                        d="M9.999 15.2l-.4 4.3c.6 0 .9-.3 1.2-.6l2.8-2.7 5.8 4.2c1.1.6 1.9.3 2.2-1l4-18.6c.4-1.7-.6-2.4-1.7-2l-23 8.8c-1.6.6-1.6 1.5-.3 1.9l5.9 1.8 13.7-8.6c.6-.4 1.2-.2.8.2" />
+                </svg></a>
+            <div class="s-line"></div>
+        </div>
+
+        <!-- Hero content -->
+        <div class="relative z-10 flex flex-col items-center justify-end w-full px-4 pb-16 md:pb-20"
+            style="min-height:100svh;">
+
+            <h1 class="hero-title select-none mt-28 sm:mt-36 lg:mt-44">
+                <span class="hero-line glitch" data-text="Hi there" id="hero-line-1">Hi there</span>
+                <span class="hero-line" id="hero-line-2">I am Buddhika<span class="hero-dot"></span></span>
+            </h1>
+
+            <div class="mt-5 text-center" data-aos="fade-up" data-aos-delay="800">
+                <p class="text-gray-400 text-[10px] sm:text-xs uppercase tracking-[0.35em]" id="hero-subtitle"></p>
+            </div>
+
+            <!-- Mobile social row -->
+            <div class="social-row mt-6" data-aos="fade-up" data-aos-delay="1000">
+                <a href="https://github.com/Alokafernando" aria-label="GitHub"><svg width="22" height="22"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path
+                            d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+                    </svg></a>
+                <a href="https://www.linkedin.com/in/buddhika-fernando-73606131a/" aria-label="LinkedIn"><svg width="22"
+                        height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                        <rect x="2" y="9" width="4" height="12" />
+                        <circle cx="4" cy="4" r="2" />
+                    </svg></a>
+                <a href="#" aria-label="Instagram"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                    </svg></a>
+                <a href="/cdn-cgi/l/email-protection#07657263636f6e6c666162756966696368363e47606a666e6b2964686a"
+                    aria-label="Email"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="5" width="18" height="14" rx="2" />
+                        <polyline points="3 7 12 13 21 7" />
+                    </svg></a>
+                <a href="https://t.me/Alokafernando" target="_blank" aria-label="Telegram"><svg width="22" height="22"
+                        viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M9.999 15.2l-.4 4.3c.6 0 .9-.3 1.2-.6l2.8-2.7 5.8 4.2c1.1.6 1.9.3 2.2-1l4-18.6c.4-1.7-.6-2.4-1.7-2l-23 8.8c-1.6.6-1.6 1.5-.3 1.9l5.9 1.8 13.7-8.6c.6-.4 1.2-.2.8.2" />
+                    </svg></a>
+            </div>
+        </div>
+
+    </section>
+
+
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
-<script src="scripts/main.js"></script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+    <script src="scripts/main.js"></script>
 </body>
 
 </html>
