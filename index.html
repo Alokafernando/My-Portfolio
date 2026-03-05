@@ -22,7 +22,41 @@
     <link rel="stylesheet" href="styles/style.css" />
 </head>
 
-<body>
+<body class="bg-black text-white overflow-x-hidden">
+
+    <!-- Custom cursor -->
+    <div id="cursor"></div>
+    <div id="cursor-ring"></div>
+
+
+    <!-- ══════════ HEADER ══════════ -->
+    <header id="main-header"
+        class="fixed top-0 left-0 w-full flex justify-between items-center px-5 sm:px-8 py-5 z-50 transition-all duration-500"
+        style="background:transparent; max-width:100vw; right:0;">
+        <a href="#home" class="flex items-center">
+            <img src="assets/logo.png" alt="Buddhika Fernando" class="h-10 w-auto object-contain drop-shadow-lg" />
+        </a>
+
+        <nav class="hidden lg:flex space-x-8 text-sm uppercase tracking-widest text-gray-400">
+            <a href="#home" class="custom-nav hover:text-white transition active">Home</a>
+            <a href="#about" class="custom-nav hover:text-white transition">About</a>
+            <a href="#skills" class="custom-nav hover:text-white transition">Skills</a>
+            <a href="#projects" class="custom-nav hover:text-white transition">Projects</a>
+            <a href="#contact" class="custom-nav hover:text-white transition">Contact</a>
+        </nav>
+
+        <button id="hamburger-btn" class="hamburger lg:hidden z-[1001]" aria-label="Toggle menu">
+            <span></span><span></span><span></span>
+        </button>
+    </header>
+
+    <div id="mobile-menu">
+        <a href="#home" class="mobile-link">Home</a>
+        <a href="#about" class="mobile-link">About</a>
+        <a href="#skills" class="mobile-link">Skills</a>
+        <a href="#projects" class="mobile-link">Projects</a>
+        <a href="#contact" class="mobile-link">Contact</a>
+    </div>
 
 </body>
 
