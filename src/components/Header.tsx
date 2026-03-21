@@ -1,18 +1,17 @@
-'use client'
-
 import { useEffect, useState } from 'react'
-import Image from 'next/image'
-import MobileMenu from './MobileMenu'
+import { motion } from 'framer-motion'
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [activeNav, setActiveNav] = useState('home')
+
+  const navLinks = ['home', 'about', 'skills', 'projects', 'contact']
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 80)
+      setIsScrolled(window.scrollY > 50)
 
-      // Update active nav
       const sections = document.querySelectorAll('section[id]')
       let current = ''
       sections.forEach((section) => {
@@ -28,58 +27,90 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id)
+  const handleNavClick = (link: string) => {
+    setIsMenuOpen(false)
+    const element = document.getElementById(link)
     if (element) {
-      const headerHeight = 80
-      const targetPos = element.offsetTop - headerHeight
-      window.scrollTo({ top: targetPos, behavior: 'smooth' })
+      element.scrollIntoView({ behavior: 'smooth' })
     }
   }
 
-  const navItems = [
-    { label: 'Home', id: 'home' },
-    { label: 'About', id: 'about' },
-    { label: 'Skills', id: 'skills' },
-    { label: 'Projects', id: 'projects' },
-    { label: 'Contact', id: 'contact' },
-  ]
-
   return (
     <>
-      <header
+      <motion.header
         className={`fixed top-0 left-0 w-full flex justify-between items-center px-5 sm:px-8 py-5 z-50 transition-all duration-500 ${
-          isScrolled
-            ? 'bg-black/85 backdrop-blur-[16px] shadow-sm shadow-white/5'
-            : 'bg-transparent'
+          isScrolled ? 'bg-background/80 backdrop-blur-md border-b border-primary/10' : 'bg-transparent'
         }`}
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
       >
-        <a href="#home" className="flex items-center">
-          <img
-            src="/assets/logo.png"
-            alt="Buddhika Fernando"
-            className="h-10 w-auto object-contain drop-shadow-lg"
-          />
+        <a href="#home" className="flex items-center z-50">
+          <img src="/assets/logo.png" alt="Logo" className="h-10 w-auto object-contain drop-shadow-lg" />
         </a>
 
-        <nav className="hidden lg:flex space-x-8 text-sm uppercase tracking-widest text-gray-400">
-          {navItems.map(({ label, id }) => (
-            <button
-              key={id}
-              onClick={() => scrollToSection(id)}
-              className={`custom-nav relative pb-1 transition ${
-                activeNav === id
-                  ? 'text-white after:w-full'
-                  : 'hover:text-white after:w-0 hover:after:w-full'
-              } after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-0.5 after:bg-accent after:transition-all`}
+        {/* Desktop Navigation */}
+        <nav className="hidden lg:flex space-x-8 text-sm uppercase tracking-widest">
+          {navLinks.map((link) => (
+            <motion.button
+              key={link}
+              onClick={() => handleNavClick(link)}
+              className={`relative pb-1 transition-colors ${
+                activeNav === link ? 'text-primary' : 'text-gray-400 hover:text-primary'
+              }`}
+              whileHover={{ scale: 1.05 }}
             >
-              {label}
-            </button>
+              {link}
+              {activeNav === link && (
+                <motion.div
+                  className="absolute bottom-0 left-0 h-0.5 bg-primary"
+                  layoutId="underline"
+                  initial={{ width: 0 }}
+                  animate={{ width: '100%' }}
+                />
+              )}
+            </motion.button>
           ))}
         </nav>
 
-        <MobileMenu navItems={navItems} scrollToSection={scrollToSection} />
-      </header>
+        {/* Mobile Hamburger */}
+        <button
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          className="lg:hidden z-50 flex flex-col gap-1.5"
+          aria-label="Toggle menu"
+        >
+          <motion.span
+            className="w-6 h-0.5 bg-primary block"
+            animate={isMenuOpen ? { rotate: 45, y: 10 } : { rotate: 0, y: 0 }}
+          />
+          <motion.span className="w-6 h-0.5 bg-primary block" animate={isMenuOpen ? { opacity: 0 } : { opacity: 1 }} />
+          <motion.span className="w-6 h-0.5 bg-primary block" animate={isMenuOpen ? { rotate: -45, y: -10 } : { rotate: 0, y: 0 }} />
+        </button>
+      </motion.header>
+
+      {/* Mobile Menu */}
+      <motion.div
+        className="fixed top-20 left-0 w-full bg-background/95 backdrop-blur-md z-40 lg:hidden border-b border-primary/10"
+        initial={{ height: 0 }}
+        animate={{ height: isMenuOpen ? 'auto' : 0 }}
+        transition={{ duration: 0.3 }}
+        style={{ overflow: 'hidden' }}
+      >
+        <nav className="flex flex-col items-center gap-6 py-8">
+          {navLinks.map((link) => (
+            <motion.button
+              key={link}
+              onClick={() => handleNavClick(link)}
+              className={`text-sm uppercase tracking-widest transition-colors ${
+                activeNav === link ? 'text-primary' : 'text-gray-400'
+              }`}
+              whileHover={{ scale: 1.1 }}
+            >
+              {link}
+            </motion.button>
+          ))}
+        </nav>
+      </motion.div>
     </>
   )
 }

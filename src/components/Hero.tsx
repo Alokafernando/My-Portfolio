@@ -1,9 +1,7 @@
-'use client'
-
 import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import ParticleCanvas from './ParticleCanvas'
-import { heroTitle, fadeInUp } from '@/lib/animations'
+import { FaGithub, FaLinkedin, FaEnvelope, FaTelegram } from 'react-icons/fa'
 
 export default function Hero() {
   const typeWriterRef = useRef<HTMLDivElement>(null)
@@ -14,10 +12,7 @@ export default function Hero() {
 
     const typeWriter = () => {
       if (typeWriterRef.current && i <= text.length) {
-        typeWriterRef.current.innerHTML = text.slice(0, i)
-        if (i < text.length) {
-          typeWriterRef.current.innerHTML += '<span class="type-cursor"></span>'
-        }
+        typeWriterRef.current.textContent = text.slice(0, i)
         i++
         setTimeout(typeWriter, 45)
       }
@@ -30,165 +25,148 @@ export default function Hero() {
     return () => clearTimeout(timer)
   }, [])
 
-  const socialLinks = [
-    { href: 'https://github.com/Alokafernando', label: 'GitHub', icon: 'github' },
-    { href: 'https://www.linkedin.com/in/buddhika-fernando-73606131a/', label: 'LinkedIn', icon: 'linkedin' },
-    { href: '#', label: 'Instagram', icon: 'instagram' },
-    { href: 'mailto:buddhikafernando19@gmail.com', label: 'Email', icon: 'email' },
-    { href: 'https://t.me/Alokafernando', label: 'Telegram', icon: 'telegram' },
-  ]
-
-  const renderSocialIcon = (icon: string) => {
-    const icons: Record<string, JSX.Element> = {
-      github: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
-        </svg>
-      ),
-      linkedin: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-          <rect x="2" y="9" width="4" height="12" />
-          <circle cx="4" cy="4" r="2" />
-        </svg>
-      ),
-      instagram: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-        </svg>
-      ),
-      email: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <rect x="3" y="5" width="18" height="14" rx="2" />
-          <polyline points="3 7 12 13 21 7" />
-        </svg>
-      ),
-      telegram: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M9.999 15.2l-.4 4.3c.6 0 .9-.3 1.2-.6l2.8-2.7 5.8 4.2c1.1.6 1.9.3 2.2-1l4-18.6c.4-1.7-.6-2.4-1.7-2l-23 8.8c-1.6.6-1.6 1.5-.3 1.9l5.9 1.8 13.7-8.6c.6-.4 1.2-.2.8.2" />
-        </svg>
-      ),
-    }
-    return icons[icon] || null
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.2, delayChildren: 0.3 },
+    },
   }
 
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
+  }
+
+  const socialLinks = [
+    { href: 'https://github.com/Alokafernando', label: 'GitHub', icon: FaGithub },
+    { href: 'https://www.linkedin.com/in/buddhika-fernando-73606131a/', label: 'LinkedIn', icon: FaLinkedin },
+    { href: 'mailto:buddhikafernando19@gmail.com', label: 'Email', icon: FaEnvelope },
+    { href: 'https://t.me/Alokafernando', label: 'Telegram', icon: FaTelegram },
+  ]
+
   return (
-    <section id="home" className="relative min-h-screen overflow-hidden flex flex-col items-center bg-black w-full max-w-[100vw]">
+    <section id="home" className="relative min-h-screen overflow-hidden flex flex-col items-center pt-20 sm:pt-24">
       <ParticleCanvas />
 
       {/* Hero background image */}
-      <div className="absolute top-0 left-0 w-full h-4/5 pointer-events-none z-0 overflow-hidden">
-        <img
-          src="/assets/hero-section.png"
-          alt="Buddhika Fernando"
-          className="h-full w-auto max-w-full mx-auto object-contain object-top filter grayscale brightness-105 contrast-125 opacity-85"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black"></div>
+      <div className="absolute inset-0 z-0">
+        <img src="/assets/hero-section.png" alt="Hero" className="w-full h-full object-cover opacity-30" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
       </div>
 
-      {/* Floating badges */}
+      {/* Floating tech badges - hidden on mobile */}
       <motion.div
         className="absolute top-1/4 right-5 sm:right-10 lg:right-12 hidden lg:block"
         animate={{ y: [0, -10, 0] }}
-        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+        transition={{ duration: 4, repeat: Infinity }}
       >
-        <div className="bg-gray-900/85 border border-gray-700 rounded-lg px-3 py-2 text-xs font-bold backdrop-blur-sm">
-          <span className="text-accent mr-2">⚡</span> Spring Boot
+        <div className="bg-background/60 backdrop-blur-md border border-primary/20 rounded-lg px-3 py-2 text-xs font-bold">
+          <span className="text-primary mr-2">⚡</span> Spring Boot
         </div>
       </motion.div>
 
       <motion.div
         className="absolute top-2/5 right-5 sm:right-8 lg:right-10 hidden lg:block"
         animate={{ y: [0, -10, 0] }}
-        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 1.5 }}
+        transition={{ duration: 4, repeat: Infinity, delay: 1.5 }}
       >
-        <div className="bg-gray-900/85 border border-gray-700 rounded-lg px-3 py-2 text-xs font-bold backdrop-blur-sm">
-          <span className="text-accent mr-2">⚛</span> React
+        <div className="bg-background/60 backdrop-blur-md border border-primary/20 rounded-lg px-3 py-2 text-xs font-bold">
+          <span className="text-primary mr-2">⚛</span> React
         </div>
       </motion.div>
 
       <motion.div
         className="absolute top-3/5 right-5 sm:right-10 lg:right-12 hidden lg:block"
         animate={{ y: [0, -10, 0] }}
-        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 3 }}
+        transition={{ duration: 4, repeat: Infinity, delay: 3 }}
       >
-        <div className="bg-gray-900/85 border border-gray-700 rounded-lg px-3 py-2 text-xs font-bold backdrop-blur-sm">
-          <span className="text-accent mr-2">☕</span> Java
+        <div className="bg-background/60 backdrop-blur-md border border-primary/20 rounded-lg px-3 py-2 text-xs font-bold">
+          <span className="text-primary mr-2">☕</span> Java
         </div>
       </motion.div>
 
       {/* Desktop Social Sidebar */}
-      <div className="absolute left-6 top-1/2 -translate-y-1/2 hidden lg:flex flex-col items-center gap-5 z-20">
-        <div className="w-0.5 h-20 bg-gradient-to-b from-accent to-transparent"></div>
-        {socialLinks.map((link, i) => (
-          <motion.a
-            key={i}
-            href={link.href}
-            aria-label={link.label}
-            className="text-gray-500 hover:text-accent transition-all hover:scale-125 hover:-translate-y-1"
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.1 * (i + 2) }}
-          >
-            {renderSocialIcon(link.icon)}
-          </motion.a>
-        ))}
-        <div className="w-0.5 h-20 bg-gradient-to-t from-accent to-transparent"></div>
-      </div>
-
-      {/* Hero Content */}
-      <div className="relative z-10 flex flex-col items-center justify-end w-full px-4 pb-16 md:pb-20 min-h-screen">
-        <motion.h1
-          className="select-none mt-28 sm:mt-36 lg:mt-44 text-center w-full"
-          initial="hidden"
-          animate="visible"
-        >
-          <motion.span
-            className="block font-black text-5xl sm:text-6xl lg:text-7xl xl:text-8xl leading-none tracking-tighter glitch"
-            custom={0}
-            variants={heroTitle}
-            data-text="Hi there"
-          >
-            Hi there
-          </motion.span>
-          <motion.span
-            className="block font-black text-5xl sm:text-6xl lg:text-7xl xl:text-8xl leading-none tracking-tighter mt-2"
-            custom={1}
-            variants={heroTitle}
-          >
-            I am Buddhika<span className="inline-block w-1.5 h-1.5 bg-accent ml-1 mb-1 rounded-sm animate-pulse-dot"></span>
-          </motion.span>
-        </motion.h1>
-
-        <motion.div className="mt-5 text-center" initial="hidden" animate="visible" variants={fadeInUp}>
-          <p
-            ref={typeWriterRef}
-            className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-widest min-h-[20px] sm:min-h-[24px]"
-            id="hero-subtitle"
-          ></p>
-        </motion.div>
-
-        {/* Mobile social row */}
-        <motion.div
-          className="flex gap-6 mt-8 lg:hidden justify-center"
-          initial="hidden"
-          animate="visible"
-          variants={fadeInUp}
-        >
-          {socialLinks.map((link, i) => (
-            <a
+      <motion.div
+        className="absolute left-6 top-1/2 -translate-y-1/2 hidden lg:flex flex-col items-center gap-5 z-20"
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.5 }}
+      >
+        <div className="w-0.5 h-20 bg-gradient-to-b from-primary to-transparent" />
+        {socialLinks.map((link, i) => {
+          const Icon = link.icon
+          return (
+            <motion.a
               key={i}
               href={link.href}
               aria-label={link.label}
-              className="text-gray-500 hover:text-accent transition-all hover:scale-125 hover:-translate-y-1"
+              className="text-gray-400 hover:text-primary transition-all"
+              whileHover={{ scale: 1.3, y: -2 }}
             >
-              <div className="w-6 h-6 sm:w-7 sm:h-7">{renderSocialIcon(link.icon)}</div>
-            </a>
-          ))}
+              <Icon size={24} />
+            </motion.a>
+          )
+        })}
+        <div className="w-0.5 h-20 bg-gradient-to-t from-primary to-transparent" />
+      </motion.div>
+
+      {/* Hero Content */}
+      <motion.div
+        className="relative z-10 flex flex-col items-center justify-center w-full px-4 pb-16 md:pb-20 min-h-screen gap-8"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        <motion.h1 className="select-none text-center w-full" variants={itemVariants}>
+          <motion.span
+            className="block font-bold text-5xl sm:text-6xl lg:text-7xl leading-tight text-primary animate-glitch"
+            animate={{ x: [0, -2, 2, -2, 0] }}
+            transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 3 }}
+          >
+            Hi there
+          </motion.span>
+          <motion.span className="block font-bold text-5xl sm:text-6xl lg:text-7xl leading-tight mt-2">
+            I am Aloka<motion.span className="text-primary animate-float" style={{ display: 'inline-block', marginLeft: '0.5em' }}>
+              ·
+            </motion.span>
+          </motion.span>
+        </motion.h1>
+
+        <motion.div className="mt-5 text-center" variants={itemVariants}>
+          <p ref={typeWriterRef} className="text-gray-400 text-xs sm:text-sm uppercase tracking-widest min-h-[20px] font-mono" />
         </motion.div>
-      </div>
+
+        {/* Mobile social row */}
+        <motion.div className="lg:hidden flex items-center gap-6" variants={itemVariants}>
+          {socialLinks.map((link, i) => {
+            const Icon = link.icon
+            return (
+              <motion.a
+                key={i}
+                href={link.href}
+                aria-label={link.label}
+                className="text-gray-400 hover:text-primary transition-all"
+                whileHover={{ scale: 1.3, y: -2 }}
+              >
+                <Icon size={28} />
+              </motion.a>
+            )
+          })}
+        </motion.div>
+      </motion.div>
+
+      {/* Scroll indicator */}
+      <motion.div
+        className="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-20"
+        animate={{ y: [0, 8, 0] }}
+        transition={{ duration: 2, repeat: Infinity }}
+      >
+        <div className="flex flex-col items-center gap-3">
+          <p className="text-xs text-gray-400 uppercase tracking-widest">Scroll to explore</p>
+          <div className="w-0.5 h-8 bg-gradient-to-b from-primary to-transparent" />
+        </div>
+      </motion.div>
     </section>
   )
 }

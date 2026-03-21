@@ -1,82 +1,34 @@
-'use client'
-
-import { useEffect, useRef } from 'react'
+import { useEffect, useState } from 'react'
+import { motion } from 'framer-motion'
 
 export default function CustomCursor() {
-  const cursorRef = useRef<HTMLDivElement>(null)
-  const cursorRingRef = useRef<HTMLDivElement>(null)
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const [isDesktop, setIsDesktop] = useState(false)
 
   useEffect(() => {
-    // Only show cursor on desktop
-    if (window.matchMedia('(pointer: coarse)').matches) {
-      return
-    }
-
-    const cursor = cursorRef.current
-    const cursorRing = cursorRingRef.current
-    if (!cursor || !cursorRing) return
-
-    let mouseX = 0
-    let mouseY = 0
-    let ringX = 0
-    let ringY = 0
+    setIsDesktop(window.matchMedia('(pointer: fine)').matches)
 
     const handleMouseMove = (e: MouseEvent) => {
-      mouseX = e.clientX
-      mouseY = e.clientY
-      cursor.style.left = mouseX + 'px'
-      cursor.style.top = mouseY + 'px'
+      setMousePosition({ x: e.clientX, y: e.clientY })
     }
 
-    const animateCursor = () => {
-      ringX += (mouseX - ringX) * 0.18
-      ringY += (mouseY - ringY) * 0.18
-      cursorRing.style.left = ringX + 'px'
-      cursorRing.style.top = ringY + 'px'
-      requestAnimationFrame(animateCursor)
-    }
-
-    document.addEventListener('mousemove', handleMouseMove)
-    animateCursor()
-
-    const handleHoverEnter = () => {
-      cursor.classList.add('hover')
-      cursorRing.classList.add('hover')
-    }
-
-    const handleHoverLeave = () => {
-      cursor.classList.remove('hover')
-      cursorRing.classList.remove('hover')
-    }
-
-    const hoverElements = document.querySelectorAll('a, button, .magnetic, .stat-card')
-    hoverElements.forEach((el) => {
-      el.addEventListener('mouseenter', handleHoverEnter)
-      el.addEventListener('mouseleave', handleHoverLeave)
-    })
-
-    return () => {
-      document.removeEventListener('mousemove', handleMouseMove)
-      hoverElements.forEach((el) => {
-        el.removeEventListener('mouseenter', handleHoverEnter)
-        el.removeEventListener('mouseleave', handleHoverLeave)
-      })
-    }
+    window.addEventListener('mousemove', handleMouseMove)
+    return () => window.removeEventListener('mousemove', handleMouseMove)
   }, [])
+
+  if (!isDesktop) return null
 
   return (
     <>
-      <div
-        id="cursor"
-        ref={cursorRef}
-        className="fixed w-2.5 h-2.5 bg-accent rounded-full pointer-events-none z-[9999] hidden lg:block"
-        style={{ transform: 'translate(-50%, -50%)' }}
+      <motion.div
+        className="fixed w-4 h-4 bg-primary rounded-full pointer-events-none z-[9999] hidden lg:block"
+        animate={{ x: mousePosition.x - 8, y: mousePosition.y - 8 }}
+        transition={{ type: 'spring', stiffness: 500, damping: 28 }}
       />
-      <div
-        id="cursor-ring"
-        ref={cursorRingRef}
-        className="fixed w-9 h-9 border-[1.5px] border-accent/50 rounded-full pointer-events-none z-[9998] hidden lg:block"
-        style={{ transform: 'translate(-50%, -50%)' }}
+      <motion.div
+        className="fixed w-8 h-8 border-2 border-primary rounded-full pointer-events-none z-[9998] hidden lg:block"
+        animate={{ x: mousePosition.x - 16, y: mousePosition.y - 16 }}
+        transition={{ type: 'spring', stiffness: 100, damping: 20 }}
       />
     </>
   )

@@ -1,14 +1,11 @@
-'use client'
-
 import { useEffect, useRef } from 'react'
 
 interface Particle {
   x: number
   y: number
-  r: number
-  dx: number
-  dy: number
-  alpha: number
+  vx: number
+  vy: number
+  radius: number
 }
 
 export default function ParticleCanvas() {
@@ -21,80 +18,92 @@ export default function ParticleCanvas() {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    let W = canvas.offsetWidth
-    let H = canvas.offsetHeight
-    let particles: Particle[] = []
+    const resizeCanvas = () => {
+      canvas.width = window.innerWidth
+      canvas.height = window.innerHeight
+    }
+    resizeCanvas()
+    window.addEventListener('resize', resizeCanvas)
 
-    canvas.width = W
-    canvas.height = H
+    class Particle implements Particle {
+      x: number
+      y: number
+      vx: number
+      vy: number
+      radius: number
 
-    // Reduce particles on mobile for performance
-    const particleCount = window.innerWidth < 768 ? 30 : window.innerWidth < 1024 ? 50 : 90
+      constructor(canvasWidth: number, canvasHeight: number) {
+        this.x = Math.random() * canvasWidth
+        this.y = Math.random() * canvasHeight
+        this.vx = (Math.random() - 0.5) * 0.5
+        this.vy = (Math.random() - 0.5) * 0.5
+        this.radius = Math.random() * 1.5 + 0.5
+      }
 
-    const createParticle = (): Particle => ({
-      x: Math.random() * W,
-      y: Math.random() * H,
-      r: Math.random() * 1.5 + 0.3,
-      dx: (Math.random() - 0.5) * 0.3,
-      dy: (Math.random() - 0.5) * 0.3,
-      alpha: Math.random() * 0.5 + 0.1,
-    })
+      draw(ctx: CanvasRenderingContext2D) {
+        ctx.fillStyle = 'rgba(0, 212, 255, 0.5)'
+        ctx.beginPath()
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2)
+        ctx.fill()
+      }
 
-    for (let i = 0; i < particleCount; i++) {
-      particles.push(createParticle())
+      update(canvasWidth: number, canvasHeight: number) {
+        this.x += this.vx
+        this.y += this.vy
+
+        if (this.x - this.radius < 0 || this.x + this.radius > canvasWidth) {
+          this.vx = -this.vx
+          this.x = Math.max(this.radius, Math.min(canvasWidth - this.radius, this.x))
+        }
+        if (this.y - this.radius < 0 || this.y + this.radius > canvasHeight) {
+          this.vy = -this.vy
+          this.y = Math.max(this.radius, Math.min(canvasHeight - this.radius, this.y))
+        }
+      }
     }
 
-    const draw = () => {
-      ctx.clearRect(0, 0, W, H)
-      particles.forEach((p, i) => {
-        p.x += p.dx
-        p.y += p.dy
+    const isMobile = window.innerWidth < 768
+    const particleCount = isMobile ? 30 : window.innerWidth < 1024 ? 50 : 90
+    const particles: Particle[] = Array.from(
+      { length: particleCount },
+      () => new Particle(canvas.width, canvas.height)
+    )
 
-        if (p.x < 0 || p.x > W) p.dx *= -1
-        if (p.y < 0 || p.y > H) p.dy *= -1
+    const animate = () => {
+      ctx.fillStyle = '#0a0e27'
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-        ctx.beginPath()
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
-        ctx.fillStyle = `rgba(219, 39, 119, ${p.alpha})`
-        ctx.fill()
+      particles.forEach((particle) => {
+        particle.update(canvas.width, canvas.height)
+        particle.draw(ctx)
+      })
 
-        // Draw connecting lines
+      ctx.strokeStyle = 'rgba(0, 212, 255, 0.1)'
+      ctx.lineWidth = 1
+      for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
-          const q = particles[j]
-          const dx = p.x - q.x
-          const dy = p.y - q.y
-          const d = Math.sqrt(dx * dx + dy * dy)
+          const dx = particles[i].x - particles[j].x
+          const dy = particles[i].y - particles[j].y
+          const distance = Math.sqrt(dx * dx + dy * dy)
 
-          if (d < 100) {
+          if (distance < 150) {
             ctx.beginPath()
-            ctx.moveTo(p.x, p.y)
-            ctx.lineTo(q.x, q.y)
-            ctx.strokeStyle = `rgba(219, 39, 119, ${0.06 * (1 - d / 100)})`
-            ctx.lineWidth = 0.5
+            ctx.moveTo(particles[i].x, particles[i].y)
+            ctx.lineTo(particles[j].x, particles[j].y)
             ctx.stroke()
           }
         }
-      })
-      requestAnimationFrame(draw)
+      }
+
+      requestAnimationFrame(animate)
     }
 
-    const handleResize = () => {
-      W = canvas.offsetWidth
-      H = canvas.offsetHeight
-      canvas.width = W
-      canvas.height = H
+    animate()
+
+    return () => {
+      window.removeEventListener('resize', resizeCanvas)
     }
-
-    window.addEventListener('resize', handleResize)
-    draw()
-
-    return () => window.removeEventListener('resize', handleResize)
   }, [])
 
-  return (
-    <canvas
-      ref={canvasRef}
-      className="absolute inset-0 z-0 pointer-events-none w-full h-full max-w-full"
-    />
-  )
+  return <canvas ref={canvasRef} className="fixed top-0 left-0 w-full h-full -z-10" />
 }
